@@ -17,15 +17,31 @@ export default class App extends Component {
     }
 
     playerMove(event) {
-        if(!this.state.gameEnded && this.state.totalMoves < 9) {
-            event.target.innerText= this.state.currentPlayer;
-            console.log(this.state.currentPlayer);
-            this.state.currentPlayer = this.state.currentPlayer === this.state.P1_SYMBOL ? this.state.P2_SYMBOL : this.state.P1_SYMBOL;
-            this.state.totalMoves++;
-            console.log(this.state.totalMoves);
+        console.log(this.state.totalMoves);
+        if(!this.state.gameEnded && this.state.totalMoves <= 8) {
+
+            if(this.state.board[event.target.dataset.squareId] == "") {
+                this.state.board[event.target.dataset.squareId] = this.state.currentPlayer;
+
+                this.state.currentPlayer = this.state.currentPlayer === this.state.P1_SYMBOL ? this.state.P2_SYMBOL : this.state.P1_SYMBOL;
+                this.state.totalMoves++;
+                console.log(this.state.board);
+                this.setState({
+                    board: this.state.board,
+                })
+            }
+
         } else {
             console.log("game ended");
         }
+    }
+
+    resetGame() {
+        this.setState({
+            board: [
+                "", "", "", "", "", "", "", "", ""
+            ]
+        })
     }
 
     render() {
@@ -34,15 +50,9 @@ export default class App extends Component {
               <h1>TIC TAC TOE</h1>
               <div id="board">
                 <div id="boardContainer" onClick={(e)=>this.playerMove(e)}>
-                  <div className="square"></div>
-                  <div className="square"></div>
-                  <div className="square"></div>
-                  <div className="square"></div>
-                  <div className="square"></div>
-                  <div className="square"></div>
-                  <div className="square"></div>
-                  <div className="square"></div>
-                  <div className="square"></div>
+                    {this.state.board.map((cell, index) => {
+                        return <div data-square-id={index} className="square">{cell}</div>;
+                    })}
                 </div>
               </div>
               <div id="statusBar">
