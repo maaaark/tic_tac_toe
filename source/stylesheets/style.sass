@@ -6,6 +6,9 @@ $abortColor: #e390c3
 $activeGameBackground: #8a85bd
 $headlineColor: #6c6c73
 
+$player1Color: #3a3b63
+$player2Color: #73dce6
+
 #board
   background: #ececee
   width:  100%
@@ -77,6 +80,9 @@ h1
   align-items: center
   border: 4px solid $inactiveBorderColor
 
+.activeGame .square:hover
+    cursor: pointer
+
 .square:nth-child(1), .square:nth-child(2), .square:nth-child(3)
   border-top: 0
 
@@ -97,3 +103,13 @@ h1
 
 .hidden
   display: none !important
+
+.player1Symbol
+  color: $player1Color
+  font-size: 5em
+  font-family: $gameFont
+
+.player2Symbol
+  font-family: $gameFont
+  color: $player2Color
+  font-size: 5em

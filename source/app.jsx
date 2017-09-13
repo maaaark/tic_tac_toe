@@ -32,7 +32,7 @@ export default class App extends Component {
                 } else {
                     this.state.currentPlayer = this.state.currentPlayer === this.state.P1_SYMBOL ? this.state.P2_SYMBOL : this.state.P1_SYMBOL;
                     this.state.totalMoves++;
-                    // console.log(this.state.board);
+                    console.log(this.state.board);
                     this.setState({
                         board: this.state.board,
                     })
@@ -114,7 +114,14 @@ export default class App extends Component {
               <div id="board" className="">
                 <div id="boardContainer" onClick={(e)=>this.playerMove(e)}>
                     {this.state.board.map((cell, index) => {
-                        return <div data-square-id={index} className="square">{cell}</div>;
+                        if(cell === this.state.P1_SYMBOL) {
+                            cell = <div className="player1Symbol">{this.state.P1_SYMBOL}</div>
+                        } else if(cell === this.state.P2_SYMBOL) {
+                            cell = <div className="player2Symbol">{this.state.P2_SYMBOL}</div>
+                        }
+                        return <div data-square-id={index} className="square">
+                            {cell}
+                        </div>;
                     })}
                 </div>
               </div>
