@@ -30,10 +30,8 @@ export default class App extends Component {
                         gameStarted: false,
                         winner: this.state.currentPlayer
                     });
-                    console.log("game stopped");
-
+                    //console.log("game stopped");
                     this.showResult(this.state.winner)
-
 
                 } else {
                     this.state.currentPlayer = this.state.currentPlayer === this.state.P1_SYMBOL ? this.state.P2_SYMBOL : this.state.P1_SYMBOL;
@@ -43,12 +41,12 @@ export default class App extends Component {
                         board: this.state.board,
                         totalMoves: this.state.totalMoves
                     });
-                    console.log("move: "+this.state.totalMoves);
+                    //console.log("move: "+this.state.totalMoves);
                     if(this.state.totalMoves >= 9) {
+                        //console.log("draw");
                         this.setState({
                             winner: "draw",
                         });
-                        console.log("draw")
                         this.showResult();
                     }
                 }
@@ -57,7 +55,7 @@ export default class App extends Component {
         }
     }
 
-    showResult(winner) {
+    showResult (winner) {
         let endOfGameScreen = document.getElementById("endOfGameScreen");
         endOfGameScreen.classList.remove("hidden");
 
@@ -70,7 +68,7 @@ export default class App extends Component {
 
     startGame() {
         this.resetGame();
-        console.log("start");
+        //console.log("start");
         this.setState({
             gameStarted: true,
             currentPlayer: "X",
@@ -100,7 +98,7 @@ export default class App extends Component {
 
         return winningCombos.find(function(combo) {
             if(symbols[combo[0]] !== "" && symbols[combo[1]] !== ""  && symbols[combo[2]] !== ""  && symbols[combo[0]] === symbols[combo[1]] && symbols[combo[1]] === symbols[combo[2]]) {
-                console.log("winner found: "+currentTurn);
+                //console.log("winner found: "+currentTurn);
                 return true
             } else {
                 return false
@@ -109,7 +107,7 @@ export default class App extends Component {
     }
 
     resetGame() {
-        console.log("reset game");
+        //console.log("reset game");
         this.setState({
             board: [
                 "", "", "", "", "", "", "", "", ""
@@ -119,7 +117,6 @@ export default class App extends Component {
             totalMoves: 0,
             currentPlayer: "X",
         });
-
 
         let boardDiv = document.getElementById("board");
         boardDiv.classList.remove("activeGame");
