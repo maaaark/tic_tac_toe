@@ -27,8 +27,22 @@ export default class App extends Component {
                 this.state.board[event.target.dataset.squareId] = this.state.currentPlayer;
 
                 if(this.checkWinner()) {
-                    this.setState({gameStarted: false})
+                    this.setState({
+                        gameStarted: false,
+                        winner: this.state.currentPlayer
+                    })
                     console.log("game stopped")
+
+                    var endOfGameScreen = document.getElementById("endOfGameScreen")
+                    endOfGameScreen.classList.remove("hidden")
+
+                    var nextGame = document.getElementById("nextGame")
+                    nextGame.classList.remove("hidden")
+
+                    var nextMove = document.getElementById("nextMove")
+                    nextMove.classList.add("hidden")
+
+
                 } else {
                     this.state.currentPlayer = this.state.currentPlayer === this.state.P1_SYMBOL ? this.state.P2_SYMBOL : this.state.P1_SYMBOL;
                     this.state.totalMoves++;
@@ -43,10 +57,14 @@ export default class App extends Component {
     }
 
     startGame() {
+        this.resetGame()
         console.log("start");
         this.setState({
             gameStarted: true,
         })
+
+        var showGameButton = document.getElementById("showGameButton")
+        showGameButton.classList.remove("hidden")
 
         var boardDiv = document.getElementById("board")
         boardDiv.classList.add("activeGame")
@@ -96,6 +114,7 @@ export default class App extends Component {
                 "", "", "", "", "", "", "", "", ""
             ],
             gameStarted: false,
+            winner: null
         })
 
 
@@ -110,6 +129,20 @@ export default class App extends Component {
 
         var nextMoveStatus = document.getElementById("nextMove")
         nextMoveStatus.classList.add("hidden")
+
+        var endOfGameScreen = document.getElementById("endOfGameScreen")
+        endOfGameScreen.classList.add("hidden")
+
+        var nextGame = document.getElementById("nextGame")
+        nextGame.classList.add("hidden")
+    }
+
+    showGame() {
+        var endOfGameScreen = document.getElementById("endOfGameScreen")
+        endOfGameScreen.classList.add("hidden")
+
+        var showGameButton = document.getElementById("showGameButton")
+        showGameButton.classList.add("hidden")
     }
 
     printPlayerSymbol(symbol) {
@@ -128,6 +161,10 @@ export default class App extends Component {
               <h1>TIC TAC</h1>
               <div id="abort" className="hidden" onClick={(e)=>this.resetGame()}>RESET</div>
               <div id="board" className="">
+                <div id="endOfGameScreen" className="hidden">
+                    {this.printPlayerSymbol(this.state.winner)}
+                    <div id="subline">WON THE GAME</div>
+                </div>
                 <div id="boardContainer" onClick={(e)=>this.playerMove(e)}>
                     {this.state.board.map((cell, index) => {
                         cell = this.printPlayerSymbol(cell)
@@ -140,6 +177,10 @@ export default class App extends Component {
               <div id="statusBar">
                   <button id="startButton" onClick={(e)=>this.startGame(e)}>START</button>
                   <div id="nextMove" className="hidden">{this.printPlayerSymbol(this.state.currentPlayer)}s Turn</div>
+                  <div id="nextGame" className="hidden">
+                      <button id="resetGameButton" onClick={()=>this.startGame()}>START NEW GAME</button>
+                      <button id="showGameButton" onClick={(e)=>this.showGame(e)}>SHOW GAME</button>
+                  </div>
               </div>
             </div>
         )

@@ -4,16 +4,19 @@ $highlightColor: #21c3a8
 $highlightFontColor: #fff
 $abortColor: #e390c3
 $activeGameBackground: #8a85bd
+$activeGameBorder: #746fa7
 $headlineColor: #6c6c73
-
+$gameBackground: #ececee
 $player1Color: #3a3b63
 $player2Color: #73dce6
+$endOfGameColor: #a6a6ae
 
 #board
-  background: #ececee
+  background: $gameBackground
   width:  100%
   display: flex
   flex-wrap: wrap
+  position: relative
 
 #game
   background: #f8f8f8
@@ -52,6 +55,14 @@ $player2Color: #73dce6
   font-family: $gameFont
   font-size: 1.5em
   border: 0
+
+#resetGameButton, #showGameButton
+  @extend #startButton
+  width: auto
+  margin-left: 10px
+  margin-right: 10px
+  padding-left: 15px
+  padding-right: 15px
 
 #abort
   position: absolute
@@ -99,7 +110,7 @@ h1
 #board.activeGame
   background: $activeGameBackground
   .square
-    border-color: #746fa7
+    border-color: $activeGameBorder
 
 .hidden
   display: none !important
@@ -124,3 +135,24 @@ h1
   .player1Symbol, .player2Symbol
     font-size: 1.5em
     display: flex
+
+#endOfGameScreen
+  position: absolute
+  background: $gameBackground
+  width: 100%
+  height: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+  flex-direction: column
+  .player1Symbol, .player2Symbol
+    font-size: 10em
+  #subline
+    color: $endOfGameColor
+    display: flex
+    font-size: 1.5em
+    font-family: $gameFont
+    font-weight: lighter
+
+#nextGame
+  display: flex
