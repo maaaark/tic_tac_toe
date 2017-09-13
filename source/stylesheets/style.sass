@@ -1,9 +1,10 @@
 $gameFont: "Lato"
-$borderColor: #000
+$inactiveBorderColor: #e7e7ea
 $highlightColor: #21c3a8
 $highlightFontColor: #fff
 $abortColor: #e390c3
-
+$activeGameBackground: #8a85bd
+$headlineColor: #6c6c73
 
 #board
   background: #ececee
@@ -47,6 +48,7 @@ $abortColor: #e390c3
   align-items: center
   font-family: $gameFont
   font-size: 1.5em
+  border: 0
 
 #abort
   position: absolute
@@ -59,7 +61,13 @@ $abortColor: #e390c3
 h1
   font-family: $gameFont
   font-size: 2em
-  text-align: center
+  color: $headlineColor
+  font-weight: normal
+  display: flex
+  justify-content: center
+  align-items: center
+  padding-top: 10px
+  margin-bottom: 10px
 
 .square
   width: 100px
@@ -67,8 +75,7 @@ h1
   display: flex
   justify-content: center
   align-items: center
-  border: 2px solid $borderColor
-
+  border: 4px solid $inactiveBorderColor
 
 .square:nth-child(1), .square:nth-child(2), .square:nth-child(3)
   border-top: 0
@@ -81,3 +88,12 @@ h1
 
 .square:nth-child(3n)
   border-right: 0
+
+
+#board.activeGame
+  background: $activeGameBackground
+  .square
+    border-color: #746fa7
+
+.hidden
+  display: none !important
