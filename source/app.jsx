@@ -56,6 +56,9 @@ export default class App extends Component {
 
         var startButton = document.getElementById("startButton")
         startButton.classList.add("hidden")
+
+        var nextMoveStatus = document.getElementById("nextMove")
+        nextMoveStatus.classList.remove("hidden")
     }
 
     checkWinner() {
@@ -104,6 +107,19 @@ export default class App extends Component {
 
         var startButton = document.getElementById("startButton")
         startButton.classList.remove("hidden")
+
+        var nextMoveStatus = document.getElementById("nextMove")
+        nextMoveStatus.classList.add("hidden")
+    }
+
+    printPlayerSymbol(symbol) {
+        var prettySymbol
+        if(symbol === this.state.P1_SYMBOL) {
+            prettySymbol = <div className="player1Symbol">{this.state.P1_SYMBOL}</div>
+        } else if(symbol === this.state.P2_SYMBOL) {
+            prettySymbol = <div className="player2Symbol">{this.state.P2_SYMBOL}</div>
+        }
+        return prettySymbol
     }
 
     render() {
@@ -114,11 +130,7 @@ export default class App extends Component {
               <div id="board" className="">
                 <div id="boardContainer" onClick={(e)=>this.playerMove(e)}>
                     {this.state.board.map((cell, index) => {
-                        if(cell === this.state.P1_SYMBOL) {
-                            cell = <div className="player1Symbol">{this.state.P1_SYMBOL}</div>
-                        } else if(cell === this.state.P2_SYMBOL) {
-                            cell = <div className="player2Symbol">{this.state.P2_SYMBOL}</div>
-                        }
+                        cell = this.printPlayerSymbol(cell)
                         return <div data-square-id={index} className="square">
                             {cell}
                         </div>;
@@ -127,6 +139,7 @@ export default class App extends Component {
               </div>
               <div id="statusBar">
                   <button id="startButton" onClick={(e)=>this.startGame(e)}>START</button>
+                  <div id="nextMove" className="hidden">{this.printPlayerSymbol(this.state.currentPlayer)}s Turn</div>
               </div>
             </div>
         )
