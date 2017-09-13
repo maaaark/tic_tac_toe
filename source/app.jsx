@@ -37,6 +37,7 @@ export default class App extends Component {
     }
 
     resetGame() {
+        console.log("reset game");
         this.setState({
             board: [
                 "", "", "", "", "", "", "", "", ""
@@ -48,6 +49,7 @@ export default class App extends Component {
         return (
             <div id="game">
               <h1>TIC TAC TOE</h1>
+              <div id="abort" onClick={(e)=>this.resetGame()}>RESET</div>
               <div id="board">
                 <div id="boardContainer" onClick={(e)=>this.playerMove(e)}>
                     {this.state.board.map((cell, index) => {

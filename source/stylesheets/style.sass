@@ -2,6 +2,7 @@ $gameFont: "Lato"
 $borderColor: #000
 $highlightColor: #21c3a8
 $highlightFontColor: #fff
+$abortColor: #e390c3
 
 
 #board
@@ -17,6 +18,7 @@ $highlightFontColor: #fff
   -moz-box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.5)
   box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.5)
   margin: 0 auto
+  position: relative
 
 #boardContainer
   width: 320px
@@ -45,6 +47,15 @@ $highlightFontColor: #fff
   align-items: center
   font-family: $gameFont
   font-size: 1.5em
+
+#abort
+  position: absolute
+  right: 10px
+  top: 20px
+  color: $abortColor
+  text-decoration: underline
+  font-family: $gameFont
+
 h1
   font-family: $gameFont
   font-size: 2em
