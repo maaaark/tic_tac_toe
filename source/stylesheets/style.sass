@@ -1,4 +1,72 @@
-h1.sample
-  font-family: Arial
+$gameFont: "Lato"
+$borderColor: #000
+$highlightColor: #21c3a8
+$highlightFontColor: #fff
+
+
+#board
+  background: #ececee
+  width:  100%
+  display: flex
+  flex-wrap: wrap
+
+#game
+  background: #f8f8f8
+  width: 470px
+  -webkit-box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.5)
+  -moz-box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.5)
+  box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.5)
+  margin: 0 auto
+
+#boardContainer
+  width: 320px
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  margin: 0 auto
+  margin-top: 20px
+  margin-bottom: 20px
+
+#statusBar
+  height: 70px
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  align-items: center
+
+#startButton
+  background: $highlightColor
+  color: $highlightFontColor
+  width: 200px
+  border-radius: 20px
+  height: 45px
+  display: flex
+  justify-content: center
+  align-items: center
+  font-family: $gameFont
+  font-size: 1.5em
+h1
+  font-family: $gameFont
+  font-size: 2em
   text-align: center
-  margin: 3em auto
+
+.square
+  width: 100px
+  height: 100px
+  display: flex
+  justify-content: center
+  align-items: center
+  border: 2px solid $borderColor
+
+
+.square:nth-child(1), .square:nth-child(2), .square:nth-child(3)
+  border-top: 0
+
+.square:nth-child(7), .square:nth-child(8), .square:nth-child(9)
+  border-bottom: 0
+
+.square:nth-child(3n+1)
+  border-left: 0
+
+.square:nth-child(3n)
+  border-right: 0
