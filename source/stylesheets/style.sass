@@ -1,15 +1,19 @@
 $gameFont: "Lato"
 $inactiveBorderColor: #e7e7ea
 $highlightColor: #21c3a8
+$highlightHoverColor: #1fa58b
 $highlightFontColor: #fff
 $abortColor: #e390c3
 $activeGameBackground: #8a85bd
 $activeGameBorder: #746fa7
+$activeGameHover: #7e79b1
 $headlineColor: #6c6c73
 $gameBackground: #ececee
 $player1Color: #3a3b63
 $player2Color: #73dce6
 $endOfGameColor: #a6a6ae
+$containerBackground: #f8f8f8
+
 
 #board
   background: $gameBackground
@@ -19,7 +23,7 @@ $endOfGameColor: #a6a6ae
   position: relative
 
 #game
-  background: #f8f8f8
+  background: $containerBackground
   width: 470px
   -webkit-box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.5)
   -moz-box-shadow: 3px 3px 10px -1px rgba(0,0,0,0.5)
@@ -53,8 +57,16 @@ $endOfGameColor: #a6a6ae
   justify-content: center
   align-items: center
   font-family: $gameFont
-  font-size: 1.5em
+  font-size: 1.3em
   border: 0
+  &:hover
+    background: $highlightHoverColor
+
+button
+  &:hover
+    cursor: pointer
+  &:active
+    transform: translateY(2px)
 
 #resetGameButton, #showGameButton
   @extend #startButton
@@ -71,6 +83,8 @@ $endOfGameColor: #a6a6ae
   color: $abortColor
   text-decoration: underline
   font-family: $gameFont
+  &:hover
+    cursor: pointer
 
 h1
   font-family: $gameFont
@@ -93,6 +107,7 @@ h1
 
 .activeGame .square:hover
     cursor: pointer
+    background: $activeGameHover
 
 .square:nth-child(1), .square:nth-child(2), .square:nth-child(3)
   border-top: 0
