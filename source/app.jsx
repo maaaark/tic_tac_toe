@@ -5,14 +5,13 @@ export default class App extends Component {
 
 
     constructor() {
-        super()
+        super();
 
         this.state = {
             gameStarted: false,
             P1_SYMBOL: "X",
             P2_SYMBOL: "O",
             currentPlayer: "X",
-            gameEnded: false,
             totalMoves: 0,
             winner: null,
             board: [
@@ -23,88 +22,90 @@ export default class App extends Component {
 
     playerMove(event) {
         if(this.state.gameStarted){
-            if(this.state.board[event.target.dataset.squareId] == "") {
+            if(this.state.board[event.target.dataset.squareId] === "") {
                 this.state.board[event.target.dataset.squareId] = this.state.currentPlayer;
 
                 if(this.checkWinner()) {
                     this.setState({
                         gameStarted: false,
                         winner: this.state.currentPlayer
-                    })
-                    console.log("game stopped")
+                    });
+                    console.log("game stopped");
 
-                    var endOfGameScreen = document.getElementById("endOfGameScreen")
-                    endOfGameScreen.classList.remove("hidden")
-
-                    var nextGame = document.getElementById("nextGame")
-                    nextGame.classList.remove("hidden")
-
-                    var nextMove = document.getElementById("nextMove")
-                    nextMove.classList.add("hidden")
+                    this.showResult(this.state.winner)
 
 
                 } else {
                     this.state.currentPlayer = this.state.currentPlayer === this.state.P1_SYMBOL ? this.state.P2_SYMBOL : this.state.P1_SYMBOL;
                     this.state.totalMoves++;
-                    console.log(this.state.board);
+
                     this.setState({
                         board: this.state.board,
-                    })
+                        totalMoves: this.state.totalMoves
+                    });
+                    console.log("move: "+this.state.totalMoves);
+                    if(this.state.totalMoves >= 9) {
+                        this.setState({
+                            winner: "draw",
+                        });
+                        console.log("draw")
+                        this.showResult();
+                    }
                 }
 
             }
         }
     }
 
+    showResult(winner) {
+        let endOfGameScreen = document.getElementById("endOfGameScreen");
+        endOfGameScreen.classList.remove("hidden");
+
+        let nextGame = document.getElementById("nextGame");
+        nextGame.classList.remove("hidden");
+
+        let nextMove = document.getElementById("nextMove");
+        nextMove.classList.add("hidden");
+    }
+
     startGame() {
-        this.resetGame()
+        this.resetGame();
         console.log("start");
         this.setState({
             gameStarted: true,
-        })
+            currentPlayer: "X",
+        });
 
-        var showGameButton = document.getElementById("showGameButton")
-        showGameButton.classList.remove("hidden")
+        let showGameButton = document.getElementById("showGameButton");
+        showGameButton.classList.remove("hidden");
 
-        var boardDiv = document.getElementById("board")
-        boardDiv.classList.add("activeGame")
+        let boardDiv = document.getElementById("board");
+        boardDiv.classList.add("activeGame");
 
-        var abortButton = document.getElementById("abort")
-        abortButton.classList.remove("hidden")
+        let abortButton = document.getElementById("abort");
+        abortButton.classList.remove("hidden");
 
-        var startButton = document.getElementById("startButton")
-        startButton.classList.add("hidden")
+        let startButton = document.getElementById("startButton");
+        startButton.classList.add("hidden");
 
-        var nextMoveStatus = document.getElementById("nextMove")
-        nextMoveStatus.classList.remove("hidden")
+        let nextMoveStatus = document.getElementById("nextMove");
+        nextMoveStatus.classList.remove("hidden");
     }
 
     checkWinner() {
 
-        var currentTurn = this.state.currentPlayer
-        var symbols = this.state.board
-        var winner = this.state.winner
-        var gameStarted = this.state.winner
-        var winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+        let currentTurn = this.state.currentPlayer;
+        let symbols = this.state.board;
+        let winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
         return winningCombos.find(function(combo) {
             if(symbols[combo[0]] !== "" && symbols[combo[1]] !== ""  && symbols[combo[2]] !== ""  && symbols[combo[0]] === symbols[combo[1]] && symbols[combo[1]] === symbols[combo[2]]) {
                 console.log("winner found: "+currentTurn);
-                winner = currentTurn
-
                 return true
             } else {
                 return false
             }
         })
-
-        /*
-        if(!this.state.gameEnded && this.state.totalMoves <= 8) {
-            console.log("no winner");
-        } else {
-            console.log("winner");
-        }
-        */
     }
 
     resetGame() {
@@ -114,43 +115,57 @@ export default class App extends Component {
                 "", "", "", "", "", "", "", "", ""
             ],
             gameStarted: false,
-            winner: null
-        })
+            winner: null,
+            totalMoves: 0,
+            currentPlayer: "X",
+        });
 
 
-        var boardDiv = document.getElementById("board")
-        boardDiv.classList.remove("activeGame")
+        let boardDiv = document.getElementById("board");
+        boardDiv.classList.remove("activeGame");
 
-        var abortButton = document.getElementById("abort")
-        abortButton.classList.add("hidden")
+        let abortButton = document.getElementById("abort");
+        abortButton.classList.add("hidden");
 
-        var startButton = document.getElementById("startButton")
-        startButton.classList.remove("hidden")
+        let startButton = document.getElementById("startButton");
+        startButton.classList.remove("hidden");
 
-        var nextMoveStatus = document.getElementById("nextMove")
-        nextMoveStatus.classList.add("hidden")
+        let nextMoveStatus = document.getElementById("nextMove");
+        nextMoveStatus.classList.add("hidden");
 
-        var endOfGameScreen = document.getElementById("endOfGameScreen")
-        endOfGameScreen.classList.add("hidden")
+        let endOfGameScreen = document.getElementById("endOfGameScreen");
+        endOfGameScreen.classList.add("hidden");
 
-        var nextGame = document.getElementById("nextGame")
-        nextGame.classList.add("hidden")
+        let nextGame = document.getElementById("nextGame");
+        nextGame.classList.add("hidden");
     }
 
     showGame() {
-        var endOfGameScreen = document.getElementById("endOfGameScreen")
-        endOfGameScreen.classList.add("hidden")
+        let endOfGameScreen = document.getElementById("endOfGameScreen");
+        endOfGameScreen.classList.add("hidden");
 
-        var showGameButton = document.getElementById("showGameButton")
-        showGameButton.classList.add("hidden")
+        let showGameButton = document.getElementById("showGameButton");
+        showGameButton.classList.add("hidden");
     }
 
     printPlayerSymbol(symbol) {
-        var prettySymbol
+        let prettySymbol;
         if(symbol === this.state.P1_SYMBOL) {
             prettySymbol = <div className="player1Symbol">{this.state.P1_SYMBOL}</div>
         } else if(symbol === this.state.P2_SYMBOL) {
             prettySymbol = <div className="player2Symbol">{this.state.P2_SYMBOL}</div>
+        }
+        return prettySymbol
+    }
+
+    showWinner(symbol) {
+        let prettySymbol;
+        if(symbol === this.state.P1_SYMBOL) {
+            prettySymbol = <div className="winnerBox"><div className="player1Symbol">{this.state.P1_SYMBOL}</div><div id="subline">WON THE GAME</div></div>
+        } else if(symbol === this.state.P2_SYMBOL) {
+            prettySymbol = <div className="winnerBox"><div className="player2Symbol">{this.state.P2_SYMBOL}</div><div id="subline">WON THE GAME</div></div>
+        } else if(symbol === "draw") {
+            prettySymbol = <div id="subline">DRAW</div>
         }
         return prettySymbol
     }
@@ -162,15 +177,12 @@ export default class App extends Component {
               <div id="abort" className="hidden" onClick={(e)=>this.resetGame()}>RESET</div>
               <div id="board" className="">
                 <div id="endOfGameScreen" className="hidden">
-                    {this.printPlayerSymbol(this.state.winner)}
-                    <div id="subline">WON THE GAME</div>
+                    {this.showWinner(this.state.winner)}
                 </div>
                 <div id="boardContainer" onClick={(e)=>this.playerMove(e)}>
                     {this.state.board.map((cell, index) => {
-                        cell = this.printPlayerSymbol(cell)
-                        return <div data-square-id={index} className="square">
-                            {cell}
-                        </div>;
+                        cell = this.printPlayerSymbol(cell);
+                        return <div data-square-id={index} className="square">{cell}</div>;
                     })}
                 </div>
               </div>
