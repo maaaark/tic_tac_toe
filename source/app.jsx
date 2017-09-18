@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 export default class App extends Component {
-
+    
     constructor() {
         super();
 
@@ -12,84 +12,70 @@ export default class App extends Component {
             currentPlayer: "X",
             totalMoves: 0,
             winner: null,
+            can_start_new_game: false,
+            show_next_player: false,
+            show_end_game_screen: false,
+            show_reset_button: false,
+            show_start_game_button: true,
+            game_is_active: false,
             board: [
                 "", "", "", "", "", "", "", "", ""
             ]
         }
     }
 
-    playerMove(event) {
+    playerMove(index) {
         if(this.state.gameStarted){
-            if(this.state.board[event.target.dataset.squareId] === "") {
-                this.state.board[event.target.dataset.squareId] = this.state.currentPlayer;
-
+            if(this.state.board[index] === "") {
+                this.state.board[index] = this.state.currentPlayer;
                 if(this.checkWinner()) {
-                    this.setState({
-                        gameStarted: false,
-                        winner: this.state.currentPlayer
-                    });
-                    //console.log("game stopped");
+                    this.state.gameStarted = false;
+                    this.state.winner = this.state.currentPlayer;
                     this.showResult(this.state.winner)
-
                 } else {
                     this.state.currentPlayer = this.state.currentPlayer === this.state.P1_SYMBOL ? this.state.P2_SYMBOL : this.state.P1_SYMBOL;
                     this.state.totalMoves++;
-
-                    this.setState({
-                        board: this.state.board,
-                        totalMoves: this.state.totalMoves
-                    });
-                    //console.log("move: "+this.state.totalMoves);
                     if(this.state.totalMoves >= 9) {
-                        //console.log("draw");
-                        this.setState({
-                            winner: "draw",
-                        });
+                        this.state.winner = "draw";
                         this.showResult();
                     }
                 }
 
+                this.setState({
+                    gameStarted: this.state.gameStarted,
+                    winner: this.state.winner,
+                    board: this.state.board,
+                    totalMoves: this.state.totalMoves
+                });
             }
         }
     }
 
     showResult (winner) {
-        let endOfGameScreen = document.getElementById("endOfGameScreen");
-        endOfGameScreen.classList.remove("hidden");
-
-        let nextGame = document.getElementById("nextGame");
-        nextGame.classList.remove("hidden");
-
-        let nextMove = document.getElementById("nextMove");
-        nextMove.classList.add("hidden");
+        this.setState({
+            can_start_new_game: true,
+            show_next_player: false,
+            show_end_game_screen: true,
+        },() => {
+            //console.log("can_start_new_game "+this.state.can_start_new_game);
+            //console.log("show_next_player test "+this.state.show_next_player);
+            //console.log("show_end_game_screen "+this.state.show_end_game_screen);
+        });
     }
 
     startGame() {
         this.resetGame();
-        //console.log("start");
         this.setState({
             gameStarted: true,
             currentPlayer: "X",
+            show_reset_button: true,
+            show_start_game_button: false,
+            show_next_player: true,
+            game_is_active: true,
         });
-
-        let showGameButton = document.getElementById("showGameButton");
-        showGameButton.classList.remove("hidden");
-
-        let boardDiv = document.getElementById("board");
-        boardDiv.classList.add("activeGame");
-
-        let abortButton = document.getElementById("abort");
-        abortButton.classList.remove("hidden");
-
-        let startButton = document.getElementById("startButton");
-        startButton.classList.add("hidden");
-
-        let nextMoveStatus = document.getElementById("nextMove");
-        nextMoveStatus.classList.remove("hidden");
     }
 
     checkWinner() {
-
         let currentTurn = this.state.currentPlayer;
         let symbols = this.state.board;
         let winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
@@ -105,7 +91,6 @@ export default class App extends Component {
     }
 
     resetGame() {
-        //console.log("reset game");
         this.setState({
             board: [
                 "", "", "", "", "", "", "", "", ""
@@ -114,33 +99,18 @@ export default class App extends Component {
             winner: null,
             totalMoves: 0,
             currentPlayer: "X",
+            can_start_new_game: null,
+            show_next_player: false,
+            show_end_game_screen: false,
+            show_start_game_button: true,
+            game_is_active: false,
         });
-
-        let boardDiv = document.getElementById("board");
-        boardDiv.classList.remove("activeGame");
-
-        let abortButton = document.getElementById("abort");
-        abortButton.classList.add("hidden");
-
-        let startButton = document.getElementById("startButton");
-        startButton.classList.remove("hidden");
-
-        let nextMoveStatus = document.getElementById("nextMove");
-        nextMoveStatus.classList.add("hidden");
-
-        let endOfGameScreen = document.getElementById("endOfGameScreen");
-        endOfGameScreen.classList.add("hidden");
-
-        let nextGame = document.getElementById("nextGame");
-        nextGame.classList.add("hidden");
     }
 
     showGame() {
-        let endOfGameScreen = document.getElementById("endOfGameScreen");
-        endOfGameScreen.classList.add("hidden");
-
-        let showGameButton = document.getElementById("showGameButton");
-        showGameButton.classList.add("hidden");
+        this.setState({
+            show_end_game_screen: false
+        });
     }
 
     printPlayerSymbol(symbol) {
@@ -169,22 +139,23 @@ export default class App extends Component {
         return (
             <div id="game">
               <h1>TIC TAC</h1>
-              <div id="abort" className="hidden" onClick={(e)=>this.resetGame()}>RESET</div>
-              <div id="board" className="">
-                <div id="endOfGameScreen" className="hidden">
+              <div id="abort" className={this.state.show_reset_button ? null : "hidden"} onClick={(e)=>this.resetGame()}>RESET</div>
+              <div id="board" className={this.state.game_is_active ? "activeGame" : null}>
+                <div id="endOfGameScreen" className={this.state.show_end_game_screen ? null : "hidden"}>
                     {this.showWinner(this.state.winner)}
                 </div>
-                <div id="boardContainer" onClick={(e)=>this.playerMove(e)}>
+                <div id="boardContainer">
                     {this.state.board.map((cell, index) => {
+                        // return <Square key={index} playerSymbol={cell}/>;
                         cell = this.printPlayerSymbol(cell);
-                        return <div data-square-id={index} className="square">{cell}</div>;
+                        return <div onClick={()=>this.playerMove(index)}  key={index} className="square">{cell}</div> ;
                     })}
                 </div>
               </div>
               <div id="statusBar">
-                  <button id="startButton" onClick={(e)=>this.startGame(e)}>START</button>
-                  <div id="nextMove" className="hidden">{this.printPlayerSymbol(this.state.currentPlayer)}s Turn</div>
-                  <div id="nextGame" className="hidden">
+                  <button id="startButton" className={this.state.show_start_game_button ? null : "hidden"} onClick={(e)=>this.startGame(e)}>START</button>
+                  <div id="nextMove" className={this.state.show_next_player ? null : "hidden"}>{this.printPlayerSymbol(this.state.currentPlayer)}s Turn</div>
+                  <div id="nextGame" className={this.state.can_start_new_game ? null : "hidden"}>
                       <button id="resetGameButton" onClick={()=>this.startGame()}>START NEW GAME</button>
                       <button id="showGameButton" onClick={(e)=>this.showGame(e)}>SHOW GAME</button>
                   </div>
@@ -192,4 +163,28 @@ export default class App extends Component {
             </div>
         )
     }
+}
+
+
+class Square extends Component{
+
+    render(){
+        console.log(this);
+        let sym = this.renderPlayerSymbol(this.props.playerSymbol);
+        return <div className="square">{sym}</div>;
+    }
+
+    renderPlayerSymbol(symbol) {
+        let prettySymbol;
+        console.log("symbol: "+symbol);
+        // GET THE STATE OF THE MAIN APP?
+        if(symbol === this.state.P1_SYMBOL) {
+            prettySymbol = <div className="player1Symbol">{this.state.P1_SYMBOL}</div>
+        } else if(symbol === this.state.P2_SYMBOL) {
+            prettySymbol = <div className="player2Symbol">{this.state.P2_SYMBOL}</div>
+        }
+        return prettySymbol
+    }
+
+
 }
